@@ -1,6 +1,6 @@
 #!/bin/sh -x
 
-cd 'src/Difficulty_Flow/'
+cd 'Difficulty_Flow/'
 python Difficulty_fitting.py --save_path ../../data/Difficulty_Flow
 
 cd '../Data_preparation/'
