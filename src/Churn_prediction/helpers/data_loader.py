@@ -32,7 +32,7 @@ class Data_loader:
     def load_data(self):
         self.feature_df = pd.read_csv(os.path.join(self.datapath, self.feature_file))
         label = pd.read_csv(os.path.join(self.datapath,self.label_file))
-        self.label = label[["new_id","label"]].rename(columns={"new_id":"user_id"})
+        self.label = label[["user_id","label"]]
         self.feature_df = self.feature_df.drop(columns=["label"]).merge(self.label,on=["user_id"])
 
         self.uid_list = []        
