@@ -17,7 +17,7 @@ class Data_transformer():
 
     def read_feature(self,data_path):
         self.raw_features = pd.read_csv(os.path.join(data_path,"interactions.raw.csv"))
-        self.level_meta = pd.read_csv(os.path.join(data_path,"level_meta.csv"),sep="\t")
+        self.level_meta = pd.read_csv(os.path.join(data_path,"level_meta.csv"))
         self.payment_data = pd.read_csv(os.path.join(data_path,"payment.csv"))
 
     def read_params(self,filepath):
@@ -59,8 +59,8 @@ class Data_transformer():
 
         # Difficulty-related features: level global retry time(challenge)，user retry time( user effort )
         logging.info("Generating difficulty-related features...")
-        global_retry =  self.level_meta.loc[:,["level_id","f_avg_retrytimes"]]
-        global_retry.rename(columns={"f_avg_retrytimes":"global_retrytime"},inplace=True)
+        global_retry =  self.level_meta.loc[:,["level_id","challenge"]]
+        global_retry.rename(columns={"challenge":"global_retrytime"},inplace=True)
         difficulty_level = self.raw_features.groupby(["user_id","date","level_id"]).agg({"retry_time":"max"}).reset_index()
         difficulty_level = difficulty_level.merge(global_retry, on=["level_id"],how='left')
         difficulty_level.fillna(0,inplace=True)

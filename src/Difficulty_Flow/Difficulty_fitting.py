@@ -104,7 +104,7 @@ def Get_group_ab(filepath="interactions.csv",Neighbor_num=5):
     win_interactions = Interactions.loc[Interactions.win==1].reset_index(drop=True)
     logging.info("Fitting difficulty curves...")
     model = Fit_model(Neighbor_num)
-    param_dict, mean_mse, mean_r = model.group_fit(Interactions)
+    param_dict, mean_mse, mean_r = model.group_fit(win_interactions)
     logging.info("Difficulty curve fit MSE: {:.3f}, R^2: {:.3f} [{:<.2f} s]".format(mean_mse,mean_r,time.time()-t0)+os.linesep)
     return param_dict, mean_mse, mean_r
 

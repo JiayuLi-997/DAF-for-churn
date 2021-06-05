@@ -39,7 +39,7 @@ class Features_generator:
         data_path = self.data_path
         logging.info("Loading data from {} ...".format(data_path))
         self.all_features = pd.read_csv(os.path.join(data_path,"day_features.csv"))
-        self.user_label = pd.read_csv(os.path.join(data_path,"label.csv"))
+        self.user_label = pd.read_csv(os.path.join(data_path,"labels.csv"))
         save_param = os.path.join(data_path,"Difficulty_Flow/0_difficulty_flow.json")
         with open(save_param) as F:
             curve_user = json.load(F)
@@ -59,7 +59,7 @@ class Features_generator:
         logging.info("Constructing sampled data...")
         sample_features = []
         columns = list(self.all_features.columns)
-        columns += ["start_day","end_day"]
+        columns += ["start_day","end_day","label"]
         for i,u in (self.user_label.iterrows()):
             part_features = self.all_features.loc[(self.all_features.user_id==u.user_id)&
                                      (self.all_features.day_since_register<u.end_day)&
@@ -110,7 +110,7 @@ class Features_generator:
         # difficulty-related features
         diff_features = self.sample_features.groupby("user_id").agg({"retry_time":["mean","var"],"global_retrytime":["mean","var"]}).reset_index()
         diff_features.columns = ["user_id","retry_time","var_retry","global_retrytime","var_globalretry"]
-        diff_lastday_features = self.sample_features.groupby("user_id").tail(1).loc[:,["retry_time","global_retrytime"]]
+        diff_lastday_features = self.sample_features.groupby("user_id").tail(1).loc[:,["user_id","retry_time","global_retrytime"]]
         diff_lastday_features.rename(columns={"retry_time":"lastday_retry","global_retrytime":"lastday_globalretry"},inplace=True)
         diff_features = diff_features.merge(diff_lastday_features,on=["user_id"],how="left")
         diff_features = diff_features.merge(self.day_features,on=["user_id"],how="left")
@@ -129,7 +129,7 @@ class Features_generator:
         
         d_features = sample_features_diff.groupby(["user_id"]).agg({"PPD":["mean","var"]}).reset_index()
         d_features.columns=["user_id","mean_d","var_d"]
-        d_last_features = sample_features_cox.groupby(["user_id"]).tail(1)
+        d_last_features = sample_features_diff.groupby(["user_id"]).tail(1)
 
         d_features = d_features.merge(d_last_features.loc[:,["user_id","PPD"]],on="user_id" ,how="left")
         d_features.rename(columns={"PPD":"last_d"},inplace=True)
@@ -160,10 +160,10 @@ class Features_generator:
             
             beta_features = self.sample_features_diff.groupby(["user_id"]).agg({"beta":["mean","var"]}).reset_index()
             beta_features.columns=["user_id","mean_beta","var_beta"]
-            beta_last_features = sample_features_diff.groupby(["user_id"]).tail(1)
+            beta_last_features = self.sample_features_diff.groupby(["user_id"]).tail(1)
             beta_features = beta_features.merge(beta_last_features.loc[:,["user_id","beta"]],on="user_id" ,how="left")
             beta_features.rename(columns={"beta":"last_beta"},inplace=True)
-            beta_features = beta_features.merge(d_features,on=["user_id"],how="right")
+            beta_features = beta_features.merge(self.diff_features,on=["user_id"],how="right")
             beta_features.fillna(0,inplace=True)
             beta_features.to_csv(os.path.join(self.save_path,"feature_data_all_fold-%d.csv"%(fold+1)),index=False)
         

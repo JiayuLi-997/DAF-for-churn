@@ -16,7 +16,7 @@ class Data_loader:
                         help="Path for folder of dataset")
         parser.add_argument("--feature_file",type=str,default="feature_data.csv", 
                             help="File to save features.")
-        parser.add_argument("--label_file",type=str,default="label.csv")
+        parser.add_argument("--label_file",type=str,default="labels.csv")
         parser.add_argument("--user_path", type=str, default="./dataset/user_split/")
 
         return parser

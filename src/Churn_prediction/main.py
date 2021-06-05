@@ -54,7 +54,6 @@ if __name__ == "__main__":
     logging.info(arg_str)
 
     fold_mean = [[],[],[]]
-    train_mean = [[],[],[]]
     for fold in range(1,6):
         # Cross validation
         user_file = [args.user_path+"/fold-%d/train.uid.npy"%(fold),args.user_path+"/fold-%d/dev.uid.npy"%(fold)]
@@ -102,5 +101,4 @@ if __name__ == "__main__":
         with open("All_results.csv","a") as F:
             F.write("\t".join(Output)+"\n")
 
-    logging.info("auc: %.3f acc: %.3f f1: %.3f"%(np.mean(fold_mean[0]), np.mean(fold_mean[1]), np.mean(fold_mean[2])))
-    logging.info("auc: %.3f acc: %.3f f1: %.3f"%(np.mean(train_mean[0]), np.mean(train_mean[1]), np.mean(train_mean[2])))
+    logging.info("Cross validation  auc: %.3f acc: %.3f f1: %.3f"%(np.mean(fold_mean[0]), np.mean(fold_mean[1]), np.mean(fold_mean[2])))
