@@ -89,9 +89,6 @@ if __name__ == "__main__":
         fold_mean[0].append(results[1][0])
         fold_mean[1].append(results[1][1])
         fold_mean[2].append(results[1][2])
-        train_mean[0].append(results[0][0])
-        train_mean[1].append(results[0][1])
-        train_mean[2].append(results[0][2])
 
         if args.save_model:
             model_path = os.path.join("Checkpoints",args.model_name,str(fold))
