@@ -122,6 +122,6 @@ python main.py --model_name GBDT --estimators 600 --subsample 0.9 --max_depth 6 
 ```
 
 </br>
-Run `churn_prediction.sh` to generate all data and get the results.
+Run `src/churn_prediction.sh` to generate all data and get the results.
 
 
