@@ -16,7 +16,7 @@ class Data_transformer():
         pass
 
     def read_feature(self,data_path):
-        self.raw_features = pd.read_csv(os.path.join(data_path,"interactions.raw.csv"))
+        self.raw_features = pd.read_csv(os.path.join(data_path,"interactions.csv"))
         self.level_meta = pd.read_csv(os.path.join(data_path,"level_meta.csv"))
         self.payment_data = pd.read_csv(os.path.join(data_path,"payment.csv"))
 
