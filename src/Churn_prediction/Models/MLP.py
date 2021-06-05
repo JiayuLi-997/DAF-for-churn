@@ -23,7 +23,7 @@ class MLP(base_model):
             hidden_size.append(args.hidden_size)
         
         self.classifier = MLPClassifier(hidden_layer_sizes=hidden_size,learning_rate_init=args.lr,
-            max_iter=args.epoches, learning_rate="adaptive", random_state=args.random_seed, #early_stopping=True,
+            max_iter=args.epoches, learning_rate="adaptive", random_state=args.random_seed, 
             verbose=False, solver="adam",alpha=5e-4)
     
     def model_predict(self, X):

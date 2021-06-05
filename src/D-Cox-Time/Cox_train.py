@@ -173,7 +173,6 @@ def training(args,fold,random_seed,data_loader):
     np.save(os.path.join("Checkpoints/fold-%d"%(fold),args.model_name,"diff_scale"),Scale_list)
     return c_index, ibs, log, diff_beta, Scale_list
 
-# main:
 def main(args):
     logging.info('-' * 45 + ' BEGIN: ' + utils.get_time() + ' ' + '-' * 45)
     exclude = ['check_epoch', 'log_file', 'model_path', 'path', 'pin_memory',

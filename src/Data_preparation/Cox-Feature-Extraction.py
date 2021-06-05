@@ -23,10 +23,10 @@ class Data_transformer():
     def read_params(self,filepath):
         # Difficulty Flow params
         with open(filepath) as F:
-                params = json.load(F)
-            self.param_dict = {}
-            for key in params:
-                self.param_dict[int(key)] = params[key]
+            params = json.load(F)
+        self.param_dict = {}
+        for key in params:
+            self.param_dict[int(key)] = params[key]
 
     def generate_features(self):
         logging.info("Dealing with raw data...")
