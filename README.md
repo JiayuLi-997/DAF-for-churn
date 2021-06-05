@@ -90,34 +90,34 @@ In our paper, we report the predictoin results with the best AUC. The hyper-para
 # Example
 
 ## LR
-python main.py --model_name LR --datapath ../../data --feature_file Churn_features/feature_data.csv --user_path dataset_split
-python main.py --model_name LR --datapath ../../data --feature_file Churn_features/feature_data_diff.csv --user_path dataset_split
-python main.py --model_name LR --datapath ../../data --feature_file Churn_features/feature_data_all.csv --user_path dataset_split
+python main.py --model_name LR --datapath ../../data --feature_file Churn-Features/feature_data.csv --user_path dataset_split
+python main.py --model_name LR --datapath ../../data --feature_file Churn-Features/feature_data_diff.csv --user_path dataset_split
+python main.py --model_name LR --datapath ../../data --feature_file Churn-Features/feature_data_all.csv --user_path dataset_split
 
 ## SVM
-python main.py --model_name SVM --C 10.0 --kernel rbf --gamma -1.0 --datapath ../../data --feature_file Churn_features/feature_data.csv --user_path dataset_split
-python main.py --model_name SVM --C 10.0 --kernel rbf --gamma -1.0 --datapath ../../data --feature_file Churn_features/feature_data_diff.csv --user_path dataset_split
-python main.py --model_name SVM --C 10.0 --kernel rbf --gamma -1.0 --datapath ../../data --feature_file Churn_features/feature_data_all.csv --user_path dataset_split
+python main.py --model_name SVM --C 10.0 --kernel rbf --gamma -1.0 --datapath ../../data --feature_file Churn-Features/feature_data.csv --user_path dataset_split
+python main.py --model_name SVM --C 10.0 --kernel rbf --gamma -1.0 --datapath ../../data --feature_file Churn-Features/feature_data_diff.csv --user_path dataset_split
+python main.py --model_name SVM --C 10.0 --kernel rbf --gamma -1.0 --datapath ../../data --feature_file Churn-Features/feature_data_all.csv --user_path dataset_split
 
 ## MLP
-python main.py --model_name MLP --embed_size 256 --hidden_size 1 --epoches 800 --lr 0.005 --datapath ../../data --feature_file Churn_features/feature_data.csv --user_path dataset_split
-python main.py --model_name MLP --embed_size 64 --hidden_size 1 --epoches 500 --lr 0.001 --datapath ../../data --feature_file Churn_features/feature_data_diff.csv --user_path dataset_split
-python main.py --model_name MLP --embed_size 64 --hidden_size 1 --epoches 500 --lr 0.001 --datapath ../../data --feature_file Churn_features/feature_data_all.csv --user_path dataset_split
+python main.py --model_name MLP --embed_size 256 --hidden_size 1 --epoches 800 --lr 0.005 --datapath ../../data --feature_file Churn-Features/feature_data.csv --user_path dataset_split
+python main.py --model_name MLP --embed_size 64 --hidden_size 1 --epoches 500 --lr 0.001 --datapath ../../data --feature_file Churn-Features/feature_data_diff.csv --user_path dataset_split
+python main.py --model_name MLP --embed_size 64 --hidden_size 1 --epoches 500 --lr 0.001 --datapath ../../data --feature_file Churn-Features/feature_data_all.csv --user_path dataset_split
 
 ## DeepFM
-python main.py --model_name DeepFM --dnn_hidden_units [256, 256] --l2_reg_linear 1e-05 --l2_reg_dnn 1e-4 --dnn_dropout 0.5 --dnn_use_bn 0 --lr 0.001 --datapath ../../data --feature_file Churn_features/feature_data.csv --user_path dataset_split
-python main.py --model_name DeepFM --dnn_hidden_units [256, 256] --l2_reg_linear 1e-4 --l2_reg_dnn 1e-4 --dnn_dropout 0.9 --dnn_use_bn 0 --lr 0.001 --datapath ../../data --feature_file Churn_features/feature_data_diff.csv --user_path dataset_split
-python main.py --model_name DeepFM --dnn_hidden_units [128, 258] --l2_reg_linear 1e-4 --l2_reg_dnn 1e-05 --dnn_dropout 0.5 --dnn_use_bn 0 --lr 0.001 --datapath ../../data --feature_file Churn_features/feature_data_all.csv --user_path dataset_split
+python main.py --model_name DeepFM --dnn_hidden_units [256, 256] --l2_reg_linear 1e-05 --l2_reg_dnn 1e-4 --dnn_dropout 0.5 --dnn_use_bn 0 --lr 0.001 --datapath ../../data --feature_file Churn-Features/feature_data.csv --user_path dataset_split
+python main.py --model_name DeepFM --dnn_hidden_units [256, 256] --l2_reg_linear 1e-4 --l2_reg_dnn 1e-4 --dnn_dropout 0.9 --dnn_use_bn 0 --lr 0.001 --datapath ../../data --feature_file Churn-Features/feature_data_diff.csv --user_path dataset_split
+python main.py --model_name DeepFM --dnn_hidden_units [128, 258] --l2_reg_linear 1e-4 --l2_reg_dnn 1e-05 --dnn_dropout 0.5 --dnn_use_bn 0 --lr 0.001 --datapath ../../data --feature_file Churn-Features/feature_data_all.csv --user_path dataset_split
 
 ## RF
-python main.py --model_name RF --estimators 500 --subsample 1 --max_depth 12 --min_samples_split 2 --min_samples_leaf 1 --datapath ../../data --feature_file Churn_features/feature_data.csv --user_path dataset_split
-python main.py --model_name RF --estimators 500 --subsample 1 --max_depth 12 --min_samples_split 2 --min_samples_leaf 1 --datapath ../../data --feature_file Churn_features/feature_data_diff.csv --user_path dataset_split
-python main.py --model_name RF --estimators 700 --subsample 1 --max_depth 14 --min_samples_split 2 --min_samples_leaf 1 --datapath ../../data --feature_file Churn_features/feature_data_all.csv --user_path dataset_split
+python main.py --model_name RF --estimators 500 --subsample 1 --max_depth 12 --min_samples_split 2 --min_samples_leaf 1 --datapath ../../data --feature_file Churn-Features/feature_data.csv --user_path dataset_split
+python main.py --model_name RF --estimators 500 --subsample 1 --max_depth 12 --min_samples_split 2 --min_samples_leaf 1 --datapath ../../data --feature_file Churn-Features/feature_data_diff.csv --user_path dataset_split
+python main.py --model_name RF --estimators 700 --subsample 1 --max_depth 14 --min_samples_split 2 --min_samples_leaf 1 --datapath ../../data --feature_file Churn-Features/feature_data_all.csv --user_path dataset_split
 
 ## GBDT
-python main.py --model_name GBDT --estimators 500 --subsample 0.9 --max_depth 6 --min_samples_split 2 --min_samples_leaf 1 --lr 0.3 --datapath ../../data --feature_file Churn_features/feature_data.csv --user_path dataset_split
-python main.py --model_name GBDT --estimators 600 --subsample 1.0 --max_depth 6 --min_samples_split 2 --min_samples_leaf 1 --lr 0.3 --datapath ../../data --feature_file Churn_features/feature_data_diff.csv --user_path dataset_split
-python main.py --model_name GBDT --estimators 600 --subsample 0.9 --max_depth 6 --min_samples_split 2 --min_samples_leaf 1 --lr 0.25 --datapath ../../data --feature_file Churn_features/feature_data_all.csv --user_path dataset_split
+python main.py --model_name GBDT --estimators 500 --subsample 0.9 --max_depth 6 --min_samples_split 2 --min_samples_leaf 1 --lr 0.3 --datapath ../../data --feature_file Churn-Features/feature_data.csv --user_path dataset_split
+python main.py --model_name GBDT --estimators 600 --subsample 1.0 --max_depth 6 --min_samples_split 2 --min_samples_leaf 1 --lr 0.3 --datapath ../../data --feature_file Churn-Features/feature_data_diff.csv --user_path dataset_split
+python main.py --model_name GBDT --estimators 600 --subsample 0.9 --max_depth 6 --min_samples_split 2 --min_samples_leaf 1 --lr 0.25 --datapath ../../data --feature_file Churn-Features/feature_data_all.csv --user_path dataset_split
 
 ```
 
