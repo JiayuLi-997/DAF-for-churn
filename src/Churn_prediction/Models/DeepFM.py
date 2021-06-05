@@ -16,7 +16,7 @@ import torch
 class DeepFM(base_model):
     @staticmethod
     def parse_model_args(parser):
-        parser.add_argument("--max_epoch",type=int, default=100, help="Max iterations for training.")
+        parser.add_argument("--max_epoch",type=int, default=1000, help="Max iterations for training.")
         parser.add_argument("--device",type=str,default='cpu')
         parser.add_argument("--batch_size",type=int,default=256)
         parser.add_argument('--earlystop_patience',type=int,default=50,
