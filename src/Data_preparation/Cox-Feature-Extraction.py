@@ -8,7 +8,6 @@ import sys
 import os
 from datetime import datetime, timedelta
 
-
 sys.path.append(os.path.join(os.getcwd(),".."))
 from utils import utils
 
@@ -22,27 +21,21 @@ class Data_transformer():
         self.payment_data = pd.read_csv(os.path.join(data_path,"payment.csv"))
 
     def read_params(self,filepath):
-        if ".csv" in filepath:
-            params = pd.read_csv(filepath)
-            self.param_dict = {}
-            for i, row in params.iterrows():
-                self.param_dict[row.user_id] = [row.a, row.b]
-        else:
-            with open(filepath) as F:
+        # Difficulty Flow params
+        with open(filepath) as F:
                 params = json.load(F)
             self.param_dict = {}
             for key in params:
                 self.param_dict[int(key)] = params[key]
 
     def generate_features(self):
-        
         logging.info("Dealing with raw data...")
         # sort by time
         self.raw_features.sort_values(by=["user_id","timestamp"],inplace=True)
         self.raw_features["time"] = self.raw_features["timestamp"].map(lambda x: datetime.fromtimestamp(x))
         self.raw_features["date"] = self.raw_features["time"].map(lambda x: (x- timedelta(hours=4)).date())
         
-        # 把date转为和第一天的距离
+        # Turn the date into the length from the login day
         start_date = datetime(2020,1,1)
         self.raw_features["date_interval"] = self.raw_features.date.map(lambda x: (x-start_date.date()).days)
         register_day = self.raw_features.groupby("user_id").head(1).loc[:,["user_id","date_interval"]]
@@ -53,7 +46,6 @@ class Data_transformer():
         # length of each session
         session_length = self.raw_features.groupby(["user_id","date","session_id"]) \
                             .session_depth.nunique().reset_index().rename(columns={"session_depth":"session_length"})
-        
 
         # day level features
         logging.info("Generating day-level features...")
@@ -107,7 +99,7 @@ class Data_transformer():
         logging.info("Gnerating payment features...")
         self.payment_data["time"] = self.payment_data["timestamp"].apply(lambda x: datetime.fromtimestamp(x))
         self.payment_data["date"] = self.payment_data["time"].apply(lambda x: (x- timedelta(hours=4)).date()) 
-        payment_features = self.payment_data.groupby(["user_id","date"]).agg({"gold_amount":"sum","money_amount":"sum"}).reset_index()
+        payment_features = self.payment_data.groupby(["user_id","date"]).agg({"gold_amount":"sum","coin_amount":"sum"}).reset_index()
 
         day_since_register = self.raw_features.groupby(["user_id","date"]).agg({"day_since_register":"mean"})
         day_since_register.reset_index(inplace=True)
@@ -133,7 +125,7 @@ class Data_transformer():
         rows = (np.array(list(churn_date.values()))-np.array(list(enter_date.values()))+1)
         feature_list = ['level_num','play_num', 'duration', 'item_all', 'session_num','session_length', 'weekday', 'last_session_play', 'last_session_level',
                     'last_session_item', 'last_session_duration', 'last_session_end_hour','last5_duration', 'last5_passrate', 'last5_item', 'last_win',
-                    'remain_energy', 'retry_time', 'global_retrytime', 'day_depth','gold_amount','money_amount']
+                    'remain_energy', 'retry_time', 'global_retrytime', 'day_depth','gold_amount','coin_amount']
         feature_idx = dict(zip(feature_list,range(len(feature_list)) ) )
         X_features = np.zeros((rows.sum(),len(feature_list)))
         User_list = np.zeros(rows.sum())
@@ -162,7 +154,7 @@ class Data_transformer():
         y = df["retry_time"].to_numpy()
         params = np.array([self.param_dict.get(int(u),[0,0]) for u in user])
         d = y - x*params[:,0] - params[:,1]
-        df["distance"] = d
+        df["PPD"] = d
         df_part = df.drop(columns=["retry_time","global_retrytime","user_id"])
         X_features = X_features + list(df_part.to_numpy())
         user_list = user_list + df["user_id"].tolist()
@@ -171,7 +163,7 @@ class Data_transformer():
         self.user_list = np.array(user_list)
 
     def save_dayfile(self,filepath):
-        self.day_features.to_csv(os.path.join(filepath,"day_features.csv"),index=False)
+        self.day_features.to_csv(os.path.join(filepath,"day_features.csv"),index=False) # day features are used for churn prediction
 
     def save_npfile(self,filepath):
         utils.check_dir(os.path.join(filepath,"X_features"))

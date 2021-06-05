@@ -20,18 +20,18 @@ import gc
 
 class Dataset_loader():
     # Load data from dataset
-    def __init__(self,data_path,fold_define, max_length=160,continous_features=[],categorial_features=[],distance_features=[],
+    def __init__(self,data_path,fold_define, max_length=30,continous_features=[],categorial_features=[],distance_features=[],
                     onehot=False,distance_level=5,onehot_dim=5,):
         '''
         Args:
-            data_path: 数据集所在路径
-            max_length: session长度限制
-            continous_features: 连续的feature list
-            categorial_features: 离散的feature list
-            distance_features: difficulty distance feature
-            onehot: 是否对协变量做onehot embedding
-            distance_level: 将distance划分成几个区间
-            onehot_dim: 协变量one hot编码的维度，仅当onehot=True时生效
+            data_path: path with dataset
+            max_length: maximum length for D-Cox-Time (30 in paper )
+            continous_features: continue feature list
+            categorial_features: discrete feature list
+            distance_features: difficulty distance feature (i.e. PPD)
+            onehot: whether do onehot embedding for basic features X
+            distance_level: embedding dim for PPD
+            onehot_dim: embedding dim for basic features ( works only when onehot=True)
         '''
         self.data_path = data_path
         self.fold_define = fold_define
@@ -44,25 +44,24 @@ class Dataset_loader():
         self.distance_level = distance_level
         self._read_data()
 
-    def Construct_sessiondata(self, fold=1): 
-        # construct session (training data)   
+    def Construct_inputdata(self, fold=1): 
         self.t0 = time.time()
         train = np.load(os.path.join(self.fold_define,"fold-%d/train.uid.npy"%(fold)))
         test = np.load(os.path.join(self.fold_define,"fold-%d/dev.uid.npy"%(fold)))
-        # test = np.load(os.path.join(self.fold_define,"test.uid.npy"))
+        
         self._get_dataset_idx(train, test)
         self._standardize(bins=self.bins,diff_level=self.distance_level)
         logging.info('Consturction done! [{:<.2f} s]'.format(time.time() - self.t0) + os.linesep)
 
     def load_data(self, dataset="train"):
-        # construct session-format data for training
-        logging.info("Generating session data for {} set...".format(dataset))
+        # construct cox-format data for training
+        logging.info("Generating data for {} set...".format(dataset))
         if dataset=="train":
-            return self._generate_session_data(self.x_train_encode, self.User_list[self.dataset_idx[0]],
-                         self.session_start[0],self.session_end[0])
+            return self._generate_data(self.x_train_encode, self.User_list[self.dataset_idx[0]],
+                         self.user_start[0],self.user_end[0])
         elif dataset=="test":
-            return self._generate_session_data(self.x_test_encode, self.User_list[self.dataset_idx[1]],
-                         self.session_start[1],self.session_end[1])
+            return self._generate_data(self.x_test_encode, self.User_list[self.dataset_idx[1]],
+                         self.user_start[1],self.user_end[1])
         else:
             logging.info("Dataset unknown: {}".format(dataset))
             return None
@@ -79,17 +78,17 @@ class Dataset_loader():
         uid_set = set(self.User_list)
         self.uid_dict = dict(zip(sorted(list(uid_set)),range(len(uid_set))))
 
-    def _get_dataset_idx(self,train_list,  test_list,):
-        # split dataset to get train,  and test sets
+    def _get_dataset_idx(self,train_list,  test_list):
+        # split dataset to get train and test sets
         logging.info("Splitting dataset ...")
         dataset_idx = [[],[]]
-        self.session_start = [[],[]]
-        self.session_end = [[], []]
+        self.user_start = [[],[]]
+        self.user_end = [[], []]
 
         def add_data(dataset_type=0, i=0):
-            self.session_start[dataset_type].append(len(dataset_idx[dataset_type]))
+            self.user_start[dataset_type].append(len(dataset_idx[dataset_type]))
             dataset_idx[dataset_type] += list(range(self.start_idx[i],self.start_idx[i+1]))
-            self.session_end[dataset_type].append(len(dataset_idx[dataset_type]))
+            self.user_end[dataset_type].append(len(dataset_idx[dataset_type]))
 
         TRAIN, TEST = 0,1
 
@@ -193,7 +192,7 @@ class Dataset_loader():
         self.x_train_encode = self.x_train_encode[:,:encode_id]
         self.x_test_encode = self.x_test_encode[:,:encode_id]
 
-    def _generate_session_data(self,X_all,u_all,start_idx,end_idx):
+    def _generate_data(self,X_all,u_all,start_idx,end_idx):
         start_idx = np.array(start_idx)
         end_idx = np.array(end_idx)
         unsort_length = end_idx - start_idx

@@ -25,7 +25,7 @@ def parse_global_args(parser):
 if __name__ == "__main__":
     init_parser = argparse.ArgumentParser(description='Model')
     init_parser.add_argument("--model_name",type=str, default="GBDT",
-                       help="model name(LR, GBDT, or RF)")
+                       help="model name(LR, SVM, MLP, GBDT, DeepFM, or RF)")
     init_args, init_extras = init_parser.parse_known_args()
     model_name = eval('{0}.{0}'.format(init_args.model_name))
 
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     fold_mean = [[],[],[]]
     train_mean = [[],[],[]]
     for fold in range(1,6):
-        # user_file = [args.user_path+"/fold-%d/train.uid.npy"%(fold),args.user_path+"/fold-%d/dev.uid.npy"%(fold)]
+        # Cross validation
         user_file = [args.user_path+"/fold-%d/train.uid.npy"%(fold),args.user_path+"/fold-%d/dev.uid.npy"%(fold)]
         feature_file = args.feature_file if "all" not in args.feature_file else args.feature_file.replace("XXX",str(fold))
         train_type = "basic"
@@ -65,7 +65,7 @@ if __name__ == "__main__":
         elif "all" in args.feature_file:
             train_type = "diff_inf"
 
-        if args.model_name in ["DeepFM","NFM"]:
+        if args.model_name in ["DeepFM"]:
             loader = data_loader.FM_Data_loader(args.datapath,feature_file,args.label_file,user_file)
             loader.generate_data()
             classifier = model_name(args,loader)
@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
         Output = [args.model_name,str(fold), train_type, arg_str]
         for i,state in enumerate(["train","validation"]):
-            logging.info("#{} set results:".format(state))
+            logging.info("Fold {} : #{} set results:".format(fold,state))
             for j,metric in enumerate(["auc","acc","f1","precision","recall"]):
                 logging.info("--# {0}: {1:.3f}".format(metric,results[i][j]))
                 Output.append("{:.3f}".format(results[i][j]))
@@ -102,5 +102,5 @@ if __name__ == "__main__":
         with open("All_results.csv","a") as F:
             F.write("\t".join(Output)+"\n")
 
-    print("auc: %.3f acc: %.3f f1: %.3f"%(np.mean(fold_mean[0]), np.mean(fold_mean[1]), np.mean(fold_mean[2])))
-    print("auc: %.3f acc: %.3f f1: %.3f"%(np.mean(train_mean[0]), np.mean(train_mean[1]), np.mean(train_mean[2])))
+    logging.info("auc: %.3f acc: %.3f f1: %.3f"%(np.mean(fold_mean[0]), np.mean(fold_mean[1]), np.mean(fold_mean[2])))
+    logging.info("auc: %.3f acc: %.3f f1: %.3f"%(np.mean(train_mean[0]), np.mean(train_mean[1]), np.mean(train_mean[2])))

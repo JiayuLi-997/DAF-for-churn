@@ -24,8 +24,6 @@ class GBDT(base_model):
                             help="The minimum number of samples required to split an internal node.")
         parser.add_argument("--min_samples_leaf", type=int,default=1,
                             help="The minimum number of samples required to be at a leaf node.")
-        # parser.add_argument("--max_features",type=int,default=7,
-        #                     help="The number of features to consider when looking for the best split.")
         return base_model.parse_model_args(parser)
 
     def __init__(self, args):

@@ -78,7 +78,6 @@ class Fit_model():
         new_global_retry.rename(columns={"retry_time":"global_retrytime"},inplace=True)
         retry_data = retry_data.merge(new_global_retry,on=["level_id"],how="left")
 
-        print(retry_data.loc[retry_data.isna().any(1)].shape)
         retry_data.fillna(0,inplace=True)
         retry_dedup = retry_data.groupby(["user_id","global_retrytime"]).agg({"retry_time":"mean"}).reset_index()  # if two levels have the same global_retrytime
 
@@ -97,10 +96,12 @@ class Fit_model():
             rlist_all.append(r)
         return param_dict, np.mean(selist),np.mean(rlist_all)
 
-def Get_group_ab(filepath="win_interactions.csv",Neighbor_num=5):
+def Get_group_ab(filepath="interactions.csv",Neighbor_num=5):
     t0 = time.time()
     logging.info("Loading data...")
     Interactions = pd.read_csv(filepath,engine='python')
+    # retain the wining results only
+    win_interactions = Interactions.loc[Interactions.win==1].reset_index(drop=True)
     logging.info("Fitting difficulty curves...")
     model = Fit_model(Neighbor_num)
     param_dict, mean_mse, mean_r = model.group_fit(Interactions)
@@ -117,7 +118,7 @@ def add_args(parser):
                         help='Logging file save path')
     parser.add_argument('--verbose', type=int, default=logging.INFO,
                         help='Logging Level, 0, 10, ..., 50')
-    parser.add_argument('--data_file',type=str,default='../../data/interactions.win.csv',
+    parser.add_argument('--data_file',type=str,default='../../data/interactions.csv',
                         help='Input data path.')
     parser.add_argument('--save_path',type=str,default='../../data',
                         help='Save parameters a&b path')

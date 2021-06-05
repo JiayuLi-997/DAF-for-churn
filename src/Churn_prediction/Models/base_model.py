@@ -31,7 +31,7 @@ class base_model:
         acc = metrics.accuracy_score(y, pred)
         # AUC
         auc = metrics.roc_auc_score(y,prob)
-        # F1 score for churn users
+        # F1 score 
         f1 = metrics.f1_score(y,pred)
         # Precision and Recall
         precision = metrics.precision_score(y,pred)

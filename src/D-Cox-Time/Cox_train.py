@@ -55,9 +55,9 @@ def parse_train_args(parser):
     parser.add_argument('--cross_validation',type=int, default=0,
                         help='Whether to use cross validation.')
     parser.add_argument('--distance_level',type=int, default=5,
-                        help='Split distance to k ranges.')
-    parser.add_argument('--max_session_length',type=int,default=160,
-                            help='Maximum length of session to clamp.')
+                        help='One-hot embedding dimension for PPD.')
+    parser.add_argument('--max_window_length',type=int,default=30,
+                            help='Maximum length of data to clamp.')
     parser.add_argument('--one_hot',type=int,default=0,help="Whether use one-hot encoding for other features.")
     return parser
 
@@ -98,7 +98,7 @@ def training(args,fold,random_seed,data_loader):
     
     # Read data and generate training, val, test set
     ## Define columns
-    data_loader.Construct_sessiondata(fold)
+    data_loader.Construct_inputdata(fold)
 
     x_train, u_train, y_train = data_loader.load_data("train")
     logging.info("Training data size: {}".format(x_train.shape))
@@ -189,11 +189,11 @@ def main(args):
     logging.info("Loading data...")
     continous_features = ["level_num","play_num","duration","item_all","session_num","last_session_play","session_length",
                                     "last_session_level","last_session_item","last_session_duration","last5_duration","last5_passrate","last5_item","day_depth",
-                                    "gold_amount","money_amount"]
+                                    "gold_amount","coin_amount"]
     categorial_features = ["weekday","last_session_end_hour","last_win","remain_energy"]
-    distance_features = ["distance"]
+    distance_features = ["PPD"]
 
-    data_loader = Dataset_loader(data_path=args.data_path,fold_define=args.fold_define,max_length=args.max_session_length,
+    data_loader = Dataset_loader(data_path=args.data_path,fold_define=args.fold_define,max_length=args.max_window_length,
                                     continous_features=continous_features,categorial_features=categorial_features,
                                     distance_features=distance_features,onehot=args.one_hot,distance_level=args.distance_level,)
     

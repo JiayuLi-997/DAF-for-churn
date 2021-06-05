@@ -36,7 +36,6 @@ class DeepFM(base_model):
             dnn_dropout = args.dnn_dropout, dnn_activation = args.dnn_activation, dnn_use_bn = use_bn,
             task='binary',device=args.device, seed=args.random_seed)
         optimizer = torch.optim.Adam(self.classifier.parameters(),lr=args.lr)
-        # self.classifier.compile(optimizer,"binary_crossentropy",metrics=["binary_crossentropy","auc"],val_metrics=["auc","binary_crossentropy"])
         self.classifier.compile('adam',"binary_crossentropy",metrics=["binary_crossentropy","auc"],val_metrics=["auc","binary_crossentropy"])
         self.batch_size = args.batch_size
         self.max_epoch = args.max_epoch
@@ -44,9 +43,7 @@ class DeepFM(base_model):
         
 
     def fit(self,X,y,val_X,val_y):
-        model_callback = []
         model_callback = [callbacks.EarlyStopping(patience=self.earlystop_patience,monitor='val_binary_crossentropy',mode="min")]
-        # model_callback = [callbacks.EarlyStopping(patience=self.earlystop_patience,monitor='val_auc',mode="max")]
         
         self.classifier.fit(X,y,batch_size=self.batch_size,epochs=self.max_epoch,validation_data=(val_X,val_y),
                 callbacks=model_callback,verbose=0)
