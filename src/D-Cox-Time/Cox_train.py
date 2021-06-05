@@ -144,9 +144,9 @@ def training(args,fold,random_seed,data_loader):
     logging.info("Analysing difficulty hazrd parameters...")
     d_idx = data_loader.difficulty_idx
     diff_level = args.distance_level
-    diff_beta = beta[d_idx["distance"]:d_idx["distance"]+diff_level,:].T
-    analyse_beta(diff_beta,data_loader.difficulty_bins["distance"],"difficulty",)
-    Scale_list = data_loader.difficulty_bins["distance"][1:-1]
+    diff_beta = beta[d_idx["PPD"]:d_idx["PPD"]+diff_level,:].T
+    analyse_beta(diff_beta,data_loader.difficulty_bins["PPD"],"difficulty",)
+    Scale_list = data_loader.difficulty_bins["PPD"][1:-1]
 
     # test
     logging.info("Calculating performance of model on test set...")
