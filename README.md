@@ -72,7 +72,7 @@ python Cox-Feature-Extraction.py --data_path ../../data/ --params_file ../../dat
 The implementation of *D-Cox-Time* is in `src/D-Cox-Time`.
 ```
 # Example
-python Cox_train.py --weight_decay 0.8 --lr 0.01 --distance_level 10 --max_session_length 30 --earlystop_patience 10 --optimizer AdamWR --cro：:ss_validation 5 --one_hot 1 --data_path ../../data/D-Cox-Time/ --fold_define ../../data/dataset_split --device cuda --model_name D-Cox-Time
+python Cox_train.py --weight_decay 0.8 --lr 0.01 --distance_level 10 --max_session_length 30 --earlystop_patience 10 --optimizer AdamWR --cross_validation 5 --one_hot 1 --data_path ../../data/D-Cox-Time/ --fold_define ../../data/dataset_split --device cuda --model_name D-Cox-Time
 ```
 
 

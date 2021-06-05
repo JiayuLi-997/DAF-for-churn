@@ -6,7 +6,7 @@ python Difficulty_fitting.py --save_path ../../data/Difficulty_Flow
 cd '../Data_preparation/'
 python Cox-Feature-Extraction.py --data_path ../../data/ --params_file ../../data/Difficulty_Flow/0_difficulty_flow.json --save_path ../../data/D-Cox-Time --save_day_features_path ../../data/
 cd '../D-Cox-Time/'
-python Cox_train.py --weight_decay 0.8 --lr 0.01 --distance_level 10 --max_session_length 30 --earlystop_patience 10 --optimizer AdamWR --cro：:ss_validation 5 --one_hot 1 --data_path ../../data/D-Cox-Time/ --fold_define ../../data/dataset_split --device cuda --model_name D-Cox-Time
+python Cox_train.py --weight_decay 0.8 --lr 0.01 --distance_level 10 --max_session_length 30 --earlystop_patience 10 --optimizer AdamWR --cross_validation 5 --one_hot 1 --data_path ../../data/D-Cox-Time/ --fold_define ../../data/dataset_split --device cuda --model_name D-Cox-Time
 
 cd '../Data_preparation/'
 python Churn-Feature-Extraction.py --data_path "../../data/" --cox_feature_path "../D-Cox-Time/Checkpoints/fold-XXX/D-Cox-Time" --save_path "../../data/Churn-Features/"
