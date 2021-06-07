@@ -1,9 +1,9 @@
 # DAF-for-churn
-These are our datasets and implementation for the paper:
+These are the datasets and implementation for the paper:
 
 *Jiayu Li, Hongyu Lu, Chenyang Wang, Weizhi Ma, Min Zhang, Xiangyu Zhao, Wei Qi, Yiqun Liu, and Shaoping Ma, 2021. A Difficulty-Aware Framework forChurn Prediction and Intervention in Games. In KDD'21.*
 
-Please cite our paper if you use our datasets or codes. Thanks!
+Please cite the paper if you use these datasets or codes.
 
 ```
 @inproceedings{li2021difficulty
@@ -15,7 +15,7 @@ Please cite our paper if you use our datasets or codes. Thanks!
   organization={ACM}
 }
 ```
-If you have any problem about this work or dataset, please contact with Jiayu Li (jy-li20@mails.tsinghua.edu.cn)
+If you have any problem about this work or dataset, please contact with Min Zhang at z-m@tsinghua.edu.cn.
 
 ## Datasets
 We collected anonymous data from a real-world tile-matching puzzle mobile game. The open dataset contains logs of 4089 new users in two-month interactions.
@@ -90,7 +90,7 @@ Feature extraction is processed with `Churn-Feature-Extraction.py` in `src/Data_
 python Churn-Feature-Extraction.py --data_path "../../data/" --cox_feature_path "../D-Cox-Time/Checkpoints/fold-XXX/D-Cox-Time" --save_path "../../data/Churn-Features/"
 ```
 
-In our paper, we report the predictoin results with the best AUC. The hyper-parameters for each model and feature group in our paper are as follows:
+In the paper, we report the predictoin results with the best AUC. The hyper-parameters for each model and feature group in our paper are as follows:
 ```
 # Example
 ## LR
