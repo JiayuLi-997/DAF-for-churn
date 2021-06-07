@@ -6,8 +6,13 @@ These are our datasets and implementation for the paper:
 Please cite our paper if you use our datasets or codes. Thanks!
 
 ```
-@inproceedings{
-  todo.
+@inproceedings{li2021difficulty
+  title={A Difficulty-Aware Framework forChurn Prediction and Intervention in Games},
+  author={Li, Jiayu and Lu, Hongyu and Wang, Chenyang and Ma, Weizhi and Zhang, Min and Zhao, Xiangyu and Qi, Wei and Liu, Yiqun and Ma, Shaoping},
+  booktitle={Proceedings of the 27th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining},
+  pages={},
+  year={2021},
+  organization={ACM}
 }
 ```
 If you have any problem about this work or dataset, please contact with Jiayu Li (jy-li20@mails.tsinghua.edu.cn)
