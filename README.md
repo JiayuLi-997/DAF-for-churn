@@ -20,7 +20,7 @@ If you have any problem about this work or dataset, please contact with Min Zhan
 ## Datasets
 We collected anonymous data from a real-world tile-matching puzzle mobile game. The open dataset contains logs of 4089 new users in two-month interactions.
 
-Due to the storage space limitation, our data set is uploaded to XXX.
+Due to the storage space limitation, our data set is uploaded to https://cloud.tsinghua.edu.cn/d/3a13277acd6b4daab1f3/.
 It contains two files of user activities:
 
 **interactions.csv**:
